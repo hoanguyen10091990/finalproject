@@ -1,0 +1,75 @@
+@keyframes hide {
+    0% {
+        opacity: 1;
+        height: 100%;
+    }
+    75% {
+        opacity: 0;
+        height: 100%;
+    }
+    100% {
+        opacity: 0;
+        height: 0px;
+        line-height: 0px;
+        padding: 0px;
+        margin-bottom: 0px;
+    }
+}
+
+.book-info-image {
+    height: 300px;
+    max-width: 200px;
+}
+
+.show-case {
+    height: 200px;
+    width: 100%;
+}
+
+
+.book-item {
+    width: 10rem;
+    
+}
+
+.book-image {
+    height: 200px;
+
+}
+
+.review {
+    animation-name: hide;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-play-state: paused;
+}
+
+.range-bar {
+    width: 80%;
+    margin: 0 auto;
+}
+
+
+.book-my-reading {
+    animation-name: hide;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-play-state: paused;
+}
+
+@media (max-width: 768px) {
+    .book-item {
+        width: 20rem;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .book-image {
+        height: 400px;
+    }
+
+    .book-info-image {
+        height: auto;
+        max-width: 100%;
+    }
+}

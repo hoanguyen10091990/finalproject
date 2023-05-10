@@ -1,0 +1,80 @@
+{% extends "bookreview/layout.html" %}
+{% load static %}
+
+
+
+{% block body %}
+<div id="flash" class="mt-3">
+    {% if messages %}
+         {% for message in messages %}
+                  <div class="alert alert-{{ message.tags}} m-0" role="alert">
+                         <strong>{{ message }}</strong>
+                   </div>
+         {% endfor %}
+    {% endif %}
+</div>
+
+    <div class=" p-4 border shadow-sm rounded my-5">
+    <h2 class="text-center">Book Info</h2>
+        <div class="row">
+            <div class="col-md-5 mx-auto">
+                <img src="{{ book.image.url }}" class="img-fluid" alt="">
+            </div>
+            <div class="col-md-7">
+                <ul class="list-group list-group-flush mt-5">
+                    <li class="list-group-item">Name: {{ book.name }}</li>
+                    <li class="list-group-item">Subtitle: {{ book.subname }}</li>
+                    <li class="list-group-item">Category: {{ book.category.name }}</li>
+                    <li class="list-group-item">Authors: {% for author in authors %} <a href="{% url 'author' author.id %}"> {{ author | title }} </a> {% if not forloop.last %}, {% endif %}  {% endfor %} </li>
+                    <li class="list-group-item">ISBN: {{ book.isbn }}</li>
+                    <li class="list-group-item">Description: {{ book.description }}</li>
+                    <li class="list-group-item rating">Rating: {{ book_rating }}</li>
+                    <li class="list-group-item">Created: {{ book.created | date:"SHORT_DATE_FORMAT" }}</li>
+                </ul>
+                {% if user.is_authenticated %}
+                <div class="text-center text-lg-start m-3" >
+                    <form action="{% url 'add_mybook' book.isbn %}" method="post">
+                        {% csrf_token %}
+                        {% if is_added %}
+                        <a href="#" class="btn btn-secondary disabled" role="button">Added</a>
+                        {% else %}
+                        <button type="submit" class="btn btn-primary">Add to my reading</button>
+                        {% endif %}
+                    </form>
+                </div>
+                {% endif %}              
+            </div>
+        </div>
+    </div>
+
+    
+    <div class=" p-4 border shadow-sm rounded my-5">
+        <h2> Reviews </h2>
+        {% if user.is_authenticated %}
+        <form action="{% url 'book'  book.isbn  %}" method="POST" class="border-bottom p-3">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit" class="btn btn-primary">Submit</button>            
+            
+        </form>
+        {% endif %}
+        <div class="reviews my-3">
+            {% for review in reviews %}
+            <div id="{{ review.id }}" class="review border-bottom mb-2 p-2">
+                <h5>Title: {{ review.title }}</h5>
+                <h6>Posted by: {{ review.posted_by }} </h6>
+                <span class="rating">Rating: {{ review.rating }}</span>
+                <p>{{ review.body }}</p>
+                {% if request.user.id == review.posted_by.id %}
+                <a class="delete-button text-muted" href="javascript:;">Delete</a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'bookreview/js/book.js' %}"></script>
+
+{% endblock %}

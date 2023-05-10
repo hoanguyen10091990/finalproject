@@ -1,0 +1,44 @@
+{% extends "bookreview/layout.html" %}
+{% load static %}
+
+
+{% block body %}
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class=" p-4 border shadow-sm rounded my-5">
+    <h2 class="text-center">My Reading List</h2>
+        {% for book in books  %}
+        <div id="book-{{ book.book.isbn }}" class="book-my-reading row border-bottom my-3">
+            <div class="col-md-3 mx-auto ">
+                <img src="{{ book.book.image.url }}" class="book-info-image img-fluid " alt="">
+            </div>
+            <div class="col-md-8">
+                <ul class="list-group list-group-flush mt-5">
+                    <li class="list-group-item">Name: {{ book.book.name }}</li>
+                    <li class="list-group-item">Subtitle: {{ book.book.subname }}</li>
+                    <li class="list-group-item">Description: {{ book.book.description }}</li>
+                    <li class="list-group-item">Current process: <span id="current-process-{{ book.book.isbn }}">{{ book.process }}</span>%</li>
+                </ul>
+                <div class="m-3">
+                <label>Update your reading process: </label>
+                <div id="{{ book.book.isbn }}"><input class="range-bar py-2" value="{{ book.process }}" min="0" max="100" style="accent-color: #2ecc71" type="range"/>
+                    <span class="align-top mx-2">{{ book.process }}<!-- Default value --></span>
+                </div>
+                <a class="update-button text-muted" href="javascript:;">Update</a> <a class="delete-button mx-2 text-muted" href="javascript:;">Remove from reading list</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'bookreview/js/my_reading.js' %}"></script>
+
+{% endblock %}

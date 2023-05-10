@@ -1,0 +1,25 @@
+{% extends "bookreview/layout.html" %}
+
+{% block body %}
+
+    <h2>Login</h2>
+
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <input autofocus type="text" class="form-control" name="username" placeholder="Username">
+        </div>
+        <div class="mb-3">
+          <input type="password" class="form-control" type="password" name="password" placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+      
+
+    Don't have an account? <a href="{% url 'register' %}">Register here.</a>
+
+{% endblock %}

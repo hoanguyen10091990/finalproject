@@ -1,0 +1,94 @@
+{% extends "bookreview/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+<!-- Showcase -->
+<div class="show-case container-fluid d-flex align-items-center justify-content-center">
+<figure class="text-center">
+    <blockquote class="blockquote">
+        
+    </blockquote>
+    <figcaption class="blockquote-footer">
+       
+    </figcaption>
+</figure>  
+</div>
+<!-- Main content -->
+<div class="mb-5">
+    <div class="row">
+        <!-- Category -->
+        <div class="col-md-3 border p-2 rounded">
+            <h3 class="text-center">Category</h3>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <a class=" text-decoration-none text-reset" href="{% url 'index' %}">All</a>
+                </li>
+                {% for category in categories %}
+                <li class="list-group-item">
+                    <a  class=" text-decoration-none text-reset" href="{% url 'index' %}?q={{ category.name }}">{{ category.name }}</a>
+                </li>
+                {% endfor %}
+              </ul>              
+        </div>
+
+        <!-- Books -->
+        <div class="col-md-6 p-2">
+            <h3 class="text-center">Books</h4>
+            <div class="d-md-flex flex-wrap">
+                {% for book in books %}
+                <div class="book-item card m-2 mx-auto mx-lg-2">
+                    <img src="{{ book.image.url }}" class="book-image card-img-top img-thumbnail" alt="...">
+                    <div class="card-body">
+                    <h5 class="card-title"><a class=" text-decoration-none text-reset " href="{% url 'book' book.isbn %}">{{ book.name }}</a></h5>
+                    </div>
+                </div>      
+                {% endfor %}
+
+                
+            </div>
+            <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+            
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+
+        <!-- Recently reviews -->
+        <div class="col-md-3 border rounded p-2">
+            <h3 class="text-center">Recently reviews</h3>
+            {% for review in reviews %}
+            <div class="review-item border-bottom m-2 py-3">
+                <h5>Review for: <a class="text-decoration-none" href="{% url 'book' review.book.isbn %}">{{ review.book.name }} </a> </h5>
+                <p>
+                    Posted by: {{ review.posted_by }}
+                    <span>{{ review.created | timesince }} ago</span>
+                </p>
+                <p>
+                    Content: {{ review.body }}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'bookreview/js/quote.js' %}"></script>
+
+    
+{% endblock %}
